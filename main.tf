@@ -45,12 +45,31 @@ resource "aws_internet_gateway" "myigw" {
   vpc_id = aws_vpc.main.id
 }
 
+resource "aws_eip" "ip1" {
+  
+}
+
+resource "aws_eip" "ip2" {
+  
+}
+
 resource "aws_nat_gateway" "NATforprivate1" {
-  allocation_id = aws_eip.example.id
-  subnet_id     = aws_subnet.
+  allocation_id = aws_eip.ip1.id
+  subnet_id     = aws_subnet.publicsub1.id
 
   tags = {
-    Name = "gw NAT"
+    Name = "NATforprivate1"
+  }
+
+  depends_on = [aws_internet_gateway.myigw.id]
+}
+
+resource "aws_nat_gateway" "NATforprivate2" {
+  allocation_id = aws_eip.ip2.id
+  subnet_id     = aws_subnet.publicsub2.id
+
+  tags = {
+    Name = "NATforprivate2"
   }
 
   depends_on = [aws_internet_gateway.myigw.id]
@@ -64,42 +83,41 @@ resource "aws_route_table" "RTforpublicsub" {
   }
 }
 
-resource "aws_route" "name" {
+resource "aws_route" "routeforpublicsub" {
   route_table_id = aws_route_table.RTforpublicsub.id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id = aws_internet_gateway.myigw.id
 }
 
-resource "aws_internet_gateway" "myigw" {
-  vpc_id = aws_vpc.main.id
-}
 
-resource "aws_route_table" "RTforpublicsub" {
+
+resource "aws_route_table" "RTforprivatesub1" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "RTforpublicsub"
+    Name = "RTforprivatesub"
   }
 }
 
-resource "aws_route" "name" {
-  route_table_id = aws_route_table.RTforpublicsub.id
+resource "aws_route" "routeforprivate1" {
+  route_table_id = aws_route_table.RTforprivatesub1.id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id = aws_internet_gateway.myigw.id
-}resource "aws_internet_gateway" "myigw" {
-  vpc_id = aws_vpc.main.id
+  nat_gateway_id = aws_nat_gateway.NATforprivate1.id
 }
 
-resource "aws_route_table" "RTforpublicsub" {
+
+resource "aws_route_table" "RTforprivatesub2" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "RTforpublicsub"
+    Name = "RTforprivatesub2"
   }
 }
 
-resource "aws_route" "name" {
-  route_table_id = aws_route_table.RTforpublicsub.id
+resource "aws_route" "routeforprivate2" {
+  route_table_id = aws_route_table.RTforprivatesub2.id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id = aws_internet_gateway.myigw.id
+  nat_gateway_id = aws_nat_gateway.NATforprivate2.id
 }
+
+
