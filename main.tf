@@ -121,3 +121,23 @@ resource "aws_route" "routeforprivate2" {
 }
 
 
+resource "aws_route_table_association" "rtassforpublicsub1" {
+  subnet_id      = aws_subnet.publicsub1.id
+  route_table_id = aws_route_table.RTforpublicsub.id
+}
+
+resource "aws_route_table_association" "rtassforpublicsub2" {
+  subnet_id      = aws_subnet.publicsub2.id
+  route_table_id = aws_route_table.RTforpublicsub.id
+}
+
+resource "aws_route_table_association" "rtassforprivatesub1" {
+  subnet_id      = aws_subnet.privatesub1.id
+  route_table_id = aws_route_table.RTforprivatesub1.id
+}
+
+resource "aws_route_table_association" "rtassforprivatesub2" {
+  subnet_id      = aws_subnet.privatesub2.id
+  route_table_id = aws_route_table.RTforprivatesub2.id
+}
+
