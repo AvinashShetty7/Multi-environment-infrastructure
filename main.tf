@@ -1,5 +1,8 @@
 resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"
+  tags = {
+    Name="main"
+  }
 }
 
 resource "aws_subnet" "privatesub1" {
@@ -12,7 +15,7 @@ resource "aws_subnet" "privatesub1" {
 }
 
 resource "aws_subnet" "privatesub2" {
-  cidr_block = "10.0.0.0/24"
+  cidr_block = "10.0.1.0/24"
   vpc_id = aws_vpc.main.id
   availability_zone = "ap-south-1b"
 
@@ -22,7 +25,7 @@ resource "aws_subnet" "privatesub2" {
 }
 
 resource "aws_subnet" "publicsub1" {
-  cidr_block = "10.0.0.0/24"
+  cidr_block = "10.0.2.0/24"
   vpc_id = aws_vpc.main.id
   availability_zone = "ap-south-1a"
 
@@ -32,7 +35,7 @@ resource "aws_subnet" "publicsub1" {
 }
 
 resource "aws_subnet" "publicsub2" {
-  cidr_block = "10.0.0.0/24"
+  cidr_block = "10.0.3.0/24"
   vpc_id = aws_vpc.main.id
   availability_zone = "ap-south-1b"
 
@@ -61,7 +64,7 @@ resource "aws_nat_gateway" "NATforprivate1" {
     Name = "NATforprivate1"
   }
 
-  depends_on = [aws_internet_gateway.myigw.id]
+  depends_on = [aws_internet_gateway.myigw]
 }
 
 resource "aws_nat_gateway" "NATforprivate2" {
@@ -72,7 +75,7 @@ resource "aws_nat_gateway" "NATforprivate2" {
     Name = "NATforprivate2"
   }
 
-  depends_on = [aws_internet_gateway.myigw.id]
+  depends_on = [aws_internet_gateway.myigw]
 }
 
 resource "aws_route_table" "RTforpublicsub" {
