@@ -11,7 +11,7 @@ variable "instance_type_launchtamplate" {
 }
 
 variable "keyname_launchtamplate" {
-  default = "iam_aviansh.pem"
+  default = "iam_avinash"
 }
 
 variable "subnetsid_loadbalancer" {

@@ -11,7 +11,7 @@ resource "aws_launch_template" "launch_tamplate" {
     tags = {
       Name = "${var.environment}-launch_tamplate"
     }
-  user_data = filebase64decode("${path.module}/exec.sh")
+  user_data = base64encode(("${path.module}/modules/autoscal/exec.sh"))
 }
 
 resource "aws_autoscaling_group" "ASG" {
@@ -19,7 +19,7 @@ resource "aws_autoscaling_group" "ASG" {
   desired_capacity   = 2
   max_size           = 4
   min_size           = 2
-
+  availability_zones = [ "ap-south-1a","ap-south-1b" ]
   launch_template {
     id      = aws_launch_template.launch_tamplate.id
     version = "$Latest"
