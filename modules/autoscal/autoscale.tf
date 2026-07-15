@@ -1,88 +1,32 @@
-resource "aws_launch_template" "example" {
-  name = "example"
-
-  block_device_mappings {
-    device_name = "/dev/sdf"
-
-    ebs {
-      volume_size = 20
-    }
-  }
-
-  capacity_reservation_specification {
-    capacity_reservation_preference = "open"
-  }
-
-  cpu_options {
-    core_count       = 4
-    threads_per_core = 2
-  }
-
-  credit_specification {
-    cpu_credits = "standard"
-  }
-
-  disable_api_stop        = true
-  disable_api_termination = true
-
-  ebs_optimized = true
-
-  iam_instance_profile {
-    name = "test"
-  }
-
-  image_id = "ami-test"
-
-  instance_initiated_shutdown_behavior = "terminate"
-
-  instance_market_options {
-    market_type = "spot"
-  }
-
-  instance_type = "t2.micro"
-
-  kernel_id = "test"
-
-  key_name = "test"
-
-  license_specification {
-    license_configuration_arn = "arn:aws:license-manager:eu-west-1:123456789012:license-configuration:lic-0123456789abcdef0123456789abcdef"
-  }
-
-  metadata_options {
-    http_endpoint               = "enabled"
-    http_tokens                 = "required"
-    http_put_response_hop_limit = 1
-    instance_metadata_tags      = "enabled"
-  }
-
+resource "aws_launch_template" "launch_tamplate" {
+  name = "l_tamplate"
+  image_id = var.image_id_launchtamplate
+  instance_type = var.instance_type_launchtamplate
+  key_name = var.keyname_launchtamplate
   monitoring {
     enabled = true
   }
-
-  network_performance_options {
-    bandwidth_weighting = "vpc-1"
-  }
-
-  network_interfaces {
-    associate_public_ip_address = true
-  }
-
-  placement {
-    availability_zone = "us-west-2a"
-  }
-
-  ram_disk_id = "test"
-
-  vpc_security_group_ids = ["sg-12345678"]
-
-  tag_specifications {
-    resource_type = "instance"
+  vpc_security_group_ids = [aws_security_group.security-group.id]
 
     tags = {
-      Name = "test"
+      Name = "${var.environment}-launch_tamplate"
     }
-  }
+  user_data = filebase64decode("${path.module}/exec.sh")
+}
 
-  user_data = filebase64("${path.module}/example.sh")
+resource "aws_autoscaling_group" "ASG" {
+  name = "myASG"
+  desired_capacity   = 2
+  max_size           = 4
+  min_size           = 2
+
+  launch_template {
+    id      = aws_launch_template.launch_tamplate.id
+    version = "$Latest"
+  }
+tag {
+  key = "Name"
+  value = "firstASG"
+  propagate_at_launch = true
+}
 }
