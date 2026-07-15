@@ -15,6 +15,7 @@ resource "aws_launch_template" "launch_tamplate" {
   # depends_on = var.
 }
 
+
 resource "aws_autoscaling_group" "ASG" {
   name = "myASG"
   desired_capacity   = 2
