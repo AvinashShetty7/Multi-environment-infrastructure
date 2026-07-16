@@ -10,3 +10,8 @@ module "autoscalling" {
   subnetid_for_bastian = module.vpcinfra.publicsub1_id
   depends_on = [ module.vpcinfra ]
 }
+
+module "cloudwatch" {
+  source = "./modules/cloudwatch"
+  autoscale_grpname = module.autoscalling.autoscalgroupname
+}

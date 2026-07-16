@@ -38,11 +38,11 @@ tag {
 
 resource "aws_instance" "bastian" {
   ami           = "ami-01a00762f46d584a1"
-  instance_type = "t2.micro"
+  instance_type = "t3.micro"
   subnet_id = var.subnetid_for_bastian
   associate_public_ip_address = true
   key_name = "iam_avinash"
-  security_groups = [aws_security_group.security-group.id]
+  vpc_security_group_ids = [ aws_security_group.security-group.id ]
   tags = {
     Name = "${var.environment}-bastian"
   }

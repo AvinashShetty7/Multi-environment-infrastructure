@@ -1,0 +1,3 @@
+variable "autoscale_grpname" {
+  
+}
