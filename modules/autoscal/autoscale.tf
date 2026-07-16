@@ -12,7 +12,6 @@ resource "aws_launch_template" "launch_tamplate" {
       Name = "${var.environment}-launch_tamplate"
     }
   user_data = filebase64(("${path.module}/exec.sh"))
-  # depends_on = var.
 }
 
 

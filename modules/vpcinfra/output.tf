@@ -17,3 +17,11 @@ output "privatesub1_id" {
 output "privatesub2_id" {
   value = aws_subnet.privatesub2.id
 }
+
+# output "nat1" {
+#   value = aws_nat_gateway.NATforprivate1.id
+# }
+
+# output "nat2" {
+#   value = aws_nat_gateway.NATforprivate2.id
+# }

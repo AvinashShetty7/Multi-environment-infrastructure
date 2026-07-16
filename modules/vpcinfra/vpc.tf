@@ -239,20 +239,20 @@ resource "aws_internet_gateway" "myigw" {
 
 # +++++++++++++++++++++ ELASTSIC IP CREATION ++++++++++++++++++++++++
 
-# resource "aws_eip" "ip1" {
+resource "aws_eip" "ip1" {
   
-# }
+}
 
-# resource "aws_eip" "ip2" {
+resource "aws_eip" "ip2" {
   
-# }
+}
 
 # +++++++++++++++++++++ NAT GATEWAY CREATION ++++++++++++++++++++++++
 
 resource "aws_nat_gateway" "NATforprivate1" {
-  # allocation_id = aws_eip.ip1.id
-  connectivity_type = "private"
-  subnet_id     = aws_subnet.privatesub1.id
+  allocation_id = aws_eip.ip1.id
+  # connectivity_type = "private"
+  subnet_id     = aws_subnet.publicsub1.id
 
   tags = {
     Name = "${var.environment}-NATforprivate1"
@@ -262,9 +262,8 @@ resource "aws_nat_gateway" "NATforprivate1" {
 }
 
 resource "aws_nat_gateway" "NATforprivate2" {
-  # allocation_id = aws_eip.ip2.id
-  subnet_id     = aws_subnet.privatesub2.id
-  connectivity_type = "private" 
+  allocation_id = aws_eip.ip2.id
+  subnet_id     = aws_subnet.publicsub2.id
 
   tags = {
     Name = "${var.environment}-NATforprivate2"

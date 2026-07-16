@@ -29,3 +29,7 @@ variable "vpc_zone_identifier_to_autoscale" {
 variable "subnetid_for_bastian" {
   
 }
+
+# variable "NATgateways" {
+  
+# }
