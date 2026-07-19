@@ -9,3 +9,4 @@ output "bastian_publicip" {
 output "autoscalgroupname" {
   value = aws_autoscaling_group.ASG.name
 }
+

@@ -5,3 +5,4 @@ output "lbdns" {
 output "bastian_publicip" {
   value = module.autoscalling.bastian_publicip
 }
+
